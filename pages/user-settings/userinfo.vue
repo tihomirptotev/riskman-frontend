@@ -1,10 +1,12 @@
 <template>
-  <div>Dashboard page</div>
+  <div>Userinfo...</div>
 </template>
 
 <script>
 export default {
-  middleware: 'auth'
+  mounted () {
+    console.log(this.$route.params)
+  }
 }
 </script>
 

@@ -1,7 +1,9 @@
+import 'dotenv/config'
 const colors = require('vuetify/es5/util/colors').default
 
 module.exports = {
-  mode: 'universal',
+  // mode: 'universal',
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -45,9 +47,25 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
+  auth: {
+    redirect: {
+      login: '/', // redirect user when not connected
+      logout: '/', // redirect user when not connected
+      callback: '/user-settings/userinfo'
+    },
+    strategies: {
+      auth0: {
+        domain: process.env.AUTH0_DOMAIN,
+        client_id: process.env.AUTH0_CLIENT_ID,
+        audience: 'riskman-api-server',
+        prompt: 'none'
+      }
+    }
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -84,6 +102,9 @@ module.exports = {
       }
     }
   },
+  // router: {
+  //   middleware: ['auth']
+  // },
   /*
   ** Build configuration
   */

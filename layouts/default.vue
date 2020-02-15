@@ -28,26 +28,57 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left fixed app color="primary" dark>
+    <v-app-bar
+      clipped-left
+      fixed
+      app
+      color="primary"
+      dark
+    >
       <v-app-bar-nav-icon>
         <v-icon>mdi-finance</v-icon>
       </v-app-bar-nav-icon>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <span v-if="$auth.loggedIn">
+        Welcome, {{$auth.user.nickname}}
+        <v-btn
+          class="ma-2"
+          icon
+          @click="onLogOut"
+        >
+          <v-icon>mdi-logout-variant</v-icon>
+        </v-btn>
+      </span>
+      <span v-else>
+        <v-btn
+          class="ma-2"
+          icon
+          @click="$auth.loginWith('auth0')"
+        >
+          Log In
+        </v-btn>
+      </span>
     </v-app-bar>
     <v-content>
-      <v-container fluid>
-        <nuxt />
+      <!-- <v-container fluid> -->
+      <nuxt />
       </v-container>
     </v-content>
-    <v-footer :fixed="fixed" app>
+    <v-footer
+      :fixed="fixed"
+      app
+    >
       <span>&copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
+  // middleware: 'auth',
   data () {
     return {
       fixed: false,
@@ -90,6 +121,14 @@ export default {
       ],
       miniVariant: true,
       title: 'Risk Manager'
+    }
+  },
+  computed: mapGetters(['isAuthenticated']),
+
+  methods: {
+    onLogOut () {
+      this.$auth.logout()
+      window.location = 'https://dev-4usveqvd.eu.auth0.com/v2/logout?returnTo=http%3A%2F%2F127.0.0.1:3000&client_id=Eg5GSItfOgOSsVTrEeHUMRNUYzG8rZbG'
     }
   }
 }
