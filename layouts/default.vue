@@ -128,7 +128,9 @@ export default {
   methods: {
     onLogOut () {
       this.$auth.logout()
-      window.location = 'https://dev-4usveqvd.eu.auth0.com/v2/logout?returnTo=http%3A%2F%2F127.0.0.1:3000&client_id=Eg5GSItfOgOSsVTrEeHUMRNUYzG8rZbG'
+      const domain = this.$store.state.auth0Domain
+      const clientId = this.$store.state.auth0ClientId
+      window.location = `https://${domain}/v2/logout?returnTo=http%3A%2F%2F127.0.0.1:3000&client_id=${clientId}`
     }
   }
 }
