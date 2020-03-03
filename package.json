@@ -6,10 +6,10 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build",
+    "build": "nuxt generate",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "deploy": "npm run generate && gh-pages -d dist",
+    "deploy": "DEPLOY_ENV=GH_PAGES npm run generate && gh-pages -d dist",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "homepage": "https://tihomirptotev.github.io/riskman-frontend",
