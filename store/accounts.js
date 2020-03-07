@@ -2,17 +2,13 @@ export const state = () => ({
   list: [],
   selected: null,
   deleteSelected: false,
-  showAddForm: false
-
+  showAddForm: false,
+  showEditForm: false
 })
 
 export const mutations = {
   populate (state, accounts) {
     state.list = accounts
-  },
-
-  add (state, account) {
-    state.list.push(account)
   },
 
   remove (state, { account }) {
@@ -23,19 +19,35 @@ export const mutations = {
     state.selected = account
   },
 
-  setDeleteSelected (state, value) {
-    state.deleteSelected = value
-  },
-
   setShowAddForm (state, value) {
     state.showAddForm = value
+  },
+
+  setShowEditForm (state, value) {
+    state.showEditForm = value
   }
 
 }
 
 export const actions = {
   async getAccounts ({ commit }) {
-    const resp = await this.$axios.$get('http://localhost:8000/accounts')
-    commit('populate', resp.data)
+    const accounts = await this.$axios.$get('/accounts')
+    commit('populate', accounts)
+  },
+
+  async addAccount (ctx, account) {
+    await this.$axios.$post('/accounts', account)
+    ctx.dispatch('getAccounts')
+  },
+
+  async updateAccount (ctx, account) {
+    console.log(account)
+    await this.$axios.$put('/accounts/' + account.id, account)
+    ctx.dispatch('getAccounts')
+  },
+
+  async deleteAccount (ctx, account) {
+    await this.$axios.$delete('/accounts/' + account.id)
+    ctx.dispatch('getAccounts')
   }
 }

@@ -11,21 +11,21 @@
           dense
           color="primary"
         >
-          <v-toolbar-title>Add new account</v-toolbar-title>
+          <v-toolbar-title>Edit account</v-toolbar-title>
         </v-toolbar>
         <v-card-text class="mt-8">
           <v-form>
             <v-text-field
-              v-model="name"
+              v-model="acc.name"
               label="Account name"
             />
             <v-autocomplete
-              v-model="currency"
+              v-model="acc.currency_id"
               :items="currency_list"
               label="Currency"
             />
             <v-text-field
-              v-model="balance_start"
+              v-model="acc.balance_start"
               label="Balance - start"
             />
             <v-menu
@@ -39,14 +39,14 @@
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="balance_start_ts"
+                  v-model="acc.balance_start_ts"
                   label="Balance - start date"
                   readonly
                   v-on="on"
                 />
               </template>
               <v-date-picker
-                v-model="balance_start_ts"
+                v-model="acc.balance_start_ts"
                 @input="menu = false"
               />
             </v-menu>
@@ -71,30 +71,26 @@
 
 <script>
 export default {
-  props: { dialog: Boolean },
+  props: { dialog: Boolean, acc: Object },
   data () {
     return {
       menu: false,
-      name: '',
-      currency: '',
-      balance_start: null,
-      balance_start_ts: new Date().toISOString().substr(0, 10),
       currency_list: ['USD', 'EUR']
     }
   },
   methods: {
     cancel () {
-      this.$store.commit('accounts/setShowAddForm', false, { root: true })
+      this.$store.commit('accounts/setShowEditForm', false, { root: true })
     },
     submit () {
-      const account = {
-        name: this.name,
-        currency_id: this.currency,
-        balance_start: parseFloat(this.balance_start),
-        balance_start_ts: new Date(this.balance_start_ts).toISOString()
+      const accountEdited = {
+        ...this.acc,
+        balance_start: parseFloat(this.acc.balance_start),
+        balance_start_ts: new Date(this.acc.balance_start_ts).toISOString()
       }
-      this.$store.dispatch('accounts/addAccount', account, { root: true })
-      this.$store.commit('accounts/setShowAddForm', false, { root: true })
+      console.log(this.accountEdited)
+      this.$store.dispatch('accounts/updateAccount', accountEdited, { root: true })
+      this.$store.commit('accounts/setShowEditForm', false, { root: true })
     }
   }
 }

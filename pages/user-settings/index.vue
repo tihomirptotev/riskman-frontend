@@ -1,5 +1,8 @@
 <template>
-  <v-card raised>
+  <v-card
+    raised
+    style="padding:20px"
+  >
     <v-toolbar
       dense
       color="primary"
@@ -17,13 +20,13 @@
             <v-row>
               <v-col md="1">Username:</v-col>
               <v-col md="3">
-                <strong>{{ username }}</strong>
+                <strong>{{ user.nickname }}</strong>
               </v-col>
             </v-row>
             <v-row>
               <v-col md="1">Email:</v-col>
               <v-col md="3">
-                <strong>{{ email }}</strong>
+                <strong>{{ user.email }}</strong>
               </v-col>
             </v-row>
           </v-card-text>
@@ -39,7 +42,6 @@
                   <th class="text-left">Currency</th>
                   <th class="text-left">Start Date</th>
                   <th class="text-right">Balance - Start</th>
-                  <th class="text-right">Balance - Current</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -49,12 +51,12 @@
                   :key="acc.id"
                 >
                   <td>{{ acc.name }}</td>
-                  <td>{{ acc.currency }}</td>
-                  <td>{{ acc.startDate | date }}</td>
-                  <td class="text-right">{{ acc.balanceStart | currencyFormat(acc.currency) }}</td>
-                  <td class="text-right">{{ acc.balanceCurrent | currencyFormat(acc.currency) }}</td>
+                  <td>{{ acc.currency_id }}</td>
+                  <td>{{ acc.balance_start_ts | date }}</td>
+                  <td class="text-right">{{ acc.balance_start | currencyFormat(acc.currency_id) }}</td>
+                  <!-- <td class="text-right">{{ acc.balanceCurrent | currencyFormat(acc.currency) }}</td> -->
                   <td>
-                    <v-icon @click="editAccount(acc)">mdi-pencil</v-icon>
+                    <v-icon @click="editAccount(index, acc)">mdi-pencil</v-icon>
                     <v-icon
                       color="error"
                       @click="onDeleteAccount(index, acc)"
@@ -76,6 +78,12 @@
           </v-card-text>
         </v-card>
         <account-form-add :dialog="showAddForm" />
+        <div v-if="showEditForm">
+          <account-form-edit
+            :dialog="showEditForm"
+            :acc="selectedAccount"
+          />
+        </div>
         <div v-if="showConfirmDelete">
           <confirm-delete-account
             :dialog="showConfirmDelete"
@@ -89,12 +97,14 @@
 
 <script>
 import AccountFormAdd from '@/components/AccountFormAdd.vue'
+import AccountFormEdit from '@/components/AccountFormEdit.vue'
 import ConfirmDeleteAccount from '@/components/ConfirmDeleteAccount.vue'
 const moment = require('moment')
 
 export default {
   components: {
     AccountFormAdd,
+    AccountFormEdit,
     ConfirmDeleteAccount
   },
   filters: {
@@ -117,20 +127,23 @@ export default {
   data () {
     return {
       formVisible: false,
-      username: 'tihomirptotev',
-      email: 'tihomirptotev@gmail.com'
+      showConfirmDelete: false,
+      selectedAccount: null
     }
   },
 
   computed: {
+    user () {
+      return this.$store.state.auth.user
+    },
     accounts () {
       return this.$store.state.accounts.list
     },
-    showConfirmDelete () {
-      return this.$store.state.accounts.deleteSelected
-    },
     showAddForm () {
       return this.$store.state.accounts.showAddForm
+    },
+    showEditForm () {
+      return this.$store.state.accounts.showEditForm
     }
   },
 
@@ -138,18 +151,22 @@ export default {
     addAccount () {
       this.formVisible = true
     },
-    editAccount (acc) { },
+    editAccount (index, acc) {
+      this.selectedAccount = { ...acc, balance_start_ts: acc.balance_start_ts.slice(0, 10) }
+      this.$store.commit('accounts/setSelected', acc)
+      this.$store.commit('accounts/setShowEditForm', true, { root: true })
+    },
     onDeleteAccount (index, acc) {
       this.$store.commit('accounts/setSelected', acc)
-      this.$store.commit('accounts/setDeleteSelected', true)
+      this.showConfirmDelete = true
     },
     deleteAccount (e) {
       if (e) {
         const acc = this.$store.state.accounts.selected
-        this.$store.commit('accounts/remove', acc, { root: true })
+        this.$store.dispatch('accounts/deleteAccount', acc, { root: true })
       }
-      this.$store.commit('accounts/setDeleteSelected', false)
       this.$store.commit('accounts/setSelected', null)
+      this.showConfirmDelete = false
     }
   }
 }
