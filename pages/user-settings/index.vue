@@ -120,10 +120,6 @@ export default {
     }
   },
 
-  async fetch ({ store, params }) {
-    await store.dispatch('accounts/getAccounts', { root: true })
-  },
-
   data () {
     return {
       formVisible: false,

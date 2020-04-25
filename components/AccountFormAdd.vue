@@ -21,7 +21,7 @@
             />
             <v-autocomplete
               v-model="currency"
-              :items="currency_list"
+              :items="currencyList"
               label="Currency"
             />
             <v-text-field
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: { dialog: Boolean },
   data () {
@@ -78,9 +80,13 @@ export default {
       name: '',
       currency: '',
       balance_start: null,
-      balance_start_ts: new Date().toISOString().substr(0, 10),
-      currency_list: ['USD', 'EUR']
+      balance_start_ts: new Date().toISOString().substr(0, 10)
     }
+  },
+  computed: {
+    ...mapGetters({
+      currencyList: 'common/currencyList'
+    })
   },
   methods: {
     cancel () {

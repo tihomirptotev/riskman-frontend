@@ -21,7 +21,7 @@
             />
             <v-autocomplete
               v-model="acc.currency_id"
-              :items="currency_list"
+              :items="currencyList"
               label="Currency"
             />
             <v-text-field
@@ -70,13 +70,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: { dialog: Boolean, acc: Object },
   data () {
     return {
-      menu: false,
-      currency_list: ['USD', 'EUR']
+      menu: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      currencyList: 'common/currencyList'
+    })
   },
   methods: {
     cancel () {

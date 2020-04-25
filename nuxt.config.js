@@ -55,7 +55,8 @@ module.exports = {
     redirect: {
       login: '/', // redirect user when not connected
       logout: '/', // redirect user when not connected
-      callback: '/user-settings/userinfo'
+      callback: '/user-settings/userinfo',
+      home: '/dashboard'
     },
     strategies: {
       auth0: {

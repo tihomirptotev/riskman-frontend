@@ -33,6 +33,7 @@ export const actions = {
   async getAccounts ({ commit }) {
     const accounts = await this.$axios.$get('/accounts')
     commit('populate', accounts)
+    console.log('Accounts fetched...')
   },
 
   async addAccount (ctx, account) {

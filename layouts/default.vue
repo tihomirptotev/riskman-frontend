@@ -1,10 +1,11 @@
 <template>
   <v-app light>
     <v-navigation-drawer
+      v-if="$auth.loggedIn"
       :mini-variant="miniVariant"
       clipped
-      fixed
       app
+      fixed
       expand-on-hover
       permanent
       width="210"
@@ -61,15 +62,15 @@
       </span>
     </v-app-bar>
     <v-content>
-      <!-- <v-container fluid> -->
-      <nuxt />
+      <v-container fluid>
+        <nuxt />
       </v-container>
     </v-content>
     <v-footer
       :fixed="fixed"
       app
     >
-      <span>&copy; 2019</span>
+      <span>&copy; 2020</span>
     </v-footer>
   </v-app>
 </template>
@@ -112,6 +113,11 @@ export default {
           icon: 'mdi-file-edit-outline',
           title: 'Reviews',
           to: '/reviews'
+        },
+        {
+          icon: 'mdi-calculator',
+          title: 'Position sizing',
+          to: '/position-sizing'
         },
         {
           icon: 'mdi-account-outline',
