@@ -15,8 +15,6 @@ export default {
   middleware: 'auth',
   async fetch ({ store, params }) {
     await store.dispatch('accounts/getAccounts', { root: true })
-    await store.dispatch('common/getCurrencies', { root: true })
-    await store.dispatch('common/getFxSymbols', { root: true })
   }
 }
 
