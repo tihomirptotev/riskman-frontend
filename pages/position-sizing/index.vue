@@ -2,7 +2,10 @@
   <v-container fluid>
     <v-row>
       <v-col cols="4">
-        <v-card raised>
+        <v-card
+          raised
+          style="height: 600px"
+        >
           <v-toolbar
             dark
             dense
@@ -127,7 +130,10 @@
         cols="4"
         v-if="psResultsVisible"
       >
-        <v-card raised>
+        <v-card
+          raised
+          style="height: 600px"
+        >
           <v-toolbar
             dark
             dense
