@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      v-model="dialog"
+      v-model="uploadMt4FormVisible"
       persistent
       max-width="600px"
     >
@@ -47,8 +47,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  props: { dialog: Boolean },
+  //   props: { dialog: Boolean },
   data () {
     return {
       uploadFile: null,
@@ -60,14 +61,19 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      uploadMt4FormVisible: 'journal/uploadMt4FormVisible'
+    })
   },
   methods: {
     cancel () {
-      console.log('Cancel called...')
       this.$refs.form.reset()
+      this.$store.dispatch('journal/setUploadMt4FormVisible', false, { root: true })
     },
     submit () {
       this.$store.dispatch('journal/uploadMT4Report', this.uploadFile, { root: true })
+      this.$refs.form.reset()
+      this.$store.dispatch('journal/setUploadMt4FormVisible', false, { root: true })
     }
   }
 }
