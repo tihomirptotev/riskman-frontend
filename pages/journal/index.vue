@@ -1,9 +1,26 @@
 <template>
-  <div>Journal page</div>
+  <div>
+    <h2>
+      Journal page
+    </h2>
+    <upload-file-form :dialog="showUploadForm"></upload-file-form>
+  </div>
 </template>
 
 <script>
-export default {}
+import UploadFileForm from '@/components/UploadFileForm.vue'
+export default {
+  components: {
+    UploadFileForm
+  },
+
+  data () {
+    return {
+      showUploadForm: true
+    }
+  }
+
+}
 </script>
 
 <style lang="scss" scoped>

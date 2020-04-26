@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="4">
+      <v-col cols="5">
         <v-card
           raised
           style="height: 600px"
