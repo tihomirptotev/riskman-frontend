@@ -23,6 +23,7 @@
               show-size
               accept=".htm,.html"
               label="Report file input"
+              v-model="uploadFile"
               :rules="[rules.required]"
             ></v-file-input>
             <v-btn
@@ -50,6 +51,7 @@ export default {
   props: { dialog: Boolean },
   data () {
     return {
+      uploadFile: null,
       lazy: false,
       valid: true,
       rules: {
@@ -65,7 +67,7 @@ export default {
       this.$refs.form.reset()
     },
     submit () {
-      console.log('Upload called...')
+      this.$store.dispatch('journal/uploadMT4Report', this.uploadFile, { root: true })
     }
   }
 }
