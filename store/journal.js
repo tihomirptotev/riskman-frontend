@@ -20,7 +20,15 @@ export const actions = {
     const formData = new FormData()
     formData.append('file', reportFile)
     const data = await this.$axios.$post('/positions/parse-mt4-report', formData)
-    const orders = JSON.parse(data.orders)
+    const ordersRaw = JSON.parse(data.orders)
+    const orders = ordersRaw.map((o) => {
+      return {
+        ...o,
+        time_open: new Date(o.time_open),
+        time_close: new Date(o.time_close),
+        item: o.item.toUpperCase()
+      }
+    })
     commit('SET_PARSED_MT4_ORDERS', orders)
   }
 }
@@ -30,6 +38,7 @@ export const getters = {
     return state.uploadMt4FormVisible
   },
   parsedMT4Orders: (state) => {
+    console.log('Parsed orders getter...')
     return state.parsedMT4Orders
   }
 }
