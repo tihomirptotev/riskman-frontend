@@ -30,6 +30,9 @@ export const actions = {
       }
     })
     commit('SET_PARSED_MT4_ORDERS', orders)
+  },
+  clearParsedMT4Orders ({ commit }) {
+    commit('SET_PARSED_MT4_ORDERS', [])
   }
 }
 
