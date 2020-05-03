@@ -1,8 +1,12 @@
 <template>
   <v-data-table
+    v-model="selected"
     :headers="headers"
     :items="orders"
     :items-per-page="5"
+    :single-select="false"
+    item-key="ticket"
+    show-select
     class="elevation-1"
   >
     <template v-slot:item.time_open="{ item }">
@@ -19,6 +23,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      selected: [],
       headers: [
         {
           text: 'Ticket',

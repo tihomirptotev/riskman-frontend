@@ -20,14 +20,36 @@
             >
               Upload report
             </v-btn>
-            <v-btn
-              class="mb-5"
-              color="error"
-              @click="clearOrders()"
+
+            <v-menu
               v-if="hasOrders"
+              open-on-hover
+              bottom
+              offset-y
             >
-              Clear data
-            </v-btn>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  class="mb-5"
+                  color="primary"
+                  dark
+                  v-on="on"
+                >
+                  Available actions
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item @click="clearOrders()">
+                  <v-list-item-title>Save selected records</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="clearOrders()">
+                  <v-list-item-title>Save all records</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="clearOrders()">
+                  <v-list-item-title>Clear all data</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
             <upload-file-form></upload-file-form>
             <m-t4-report-table v-if="hasOrders"></m-t4-report-table>
           </v-card-text>
