@@ -1,10 +1,13 @@
 <template>
   <v-data-table
+    caption="Table caption"
     v-model="selected"
     :headers="headers"
     :items="orders"
     :items-per-page="5"
     :single-select="false"
+    @item-selected="onOrderSelected"
+    @toggle-select-all="onAllOrdersSelected"
     item-key="ticket"
     show-select
     class="elevation-1"
@@ -13,13 +16,14 @@
       {{ item.time_open.toLocaleString() }}
     </template>
     <template v-slot:item.time_close="{ item }">
-      {{ item.time_close.toLocaleString() }}
+      {{item.time_close ? item.time_close.toLocaleString() : item.time_close}}
     </template>
   </v-data-table>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import * as lodash from 'lodash'
 export default {
   data () {
     return {
@@ -30,6 +34,12 @@ export default {
           align: 'start',
           sortable: true,
           value: 'ticket'
+        },
+        {
+          text: 'Open',
+          align: 'start',
+          sortable: true,
+          value: 'is_open'
         },
         {
           text: 'Type',
@@ -114,6 +124,33 @@ export default {
   },
   computed: {
     ...mapGetters({ orders: 'journal/parsedMT4Orders' })
+  },
+  methods: {
+    ...mapActions({
+      addToSelectedTickets: 'journal/addToSelectedTickets',
+      removeFromSelectedTickets: 'journal/removeFromSelectedTickets',
+      clearSelectedTickets: 'journal/clearSelectedTickets',
+      setSelectedTickets: 'journal/setSelectedTickets'
+    }),
+    onOrderSelected (row) {
+      const toAdd = row.value
+      if (toAdd) {
+        this.addToSelectedTickets(row.item.ticket)
+      } else {
+        this.removeFromSelectedTickets(row.item.ticket)
+      }
+      console.log('Order selected:', row.item.ticket, row.value)
+    },
+    onAllOrdersSelected (rows) {
+      const selected = rows.value
+      const tickets = lodash.map(rows.items, order => order.ticket)
+      if (selected) {
+        this.addToSelectedTickets(tickets)
+      } else {
+        this.removeFromSelectedTickets(tickets)
+      }
+      console.log('All orders selected:', rows.items, rows.value)
+    }
   }
 }
 </script>

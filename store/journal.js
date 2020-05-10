@@ -1,6 +1,9 @@
+import * as lodash from 'lodash'
+
 export const state = () => ({
   uploadMt4FormVisible: false,
-  parsedMT4Orders: []
+  parsedMT4Orders: [],
+  selectedMT4Tickets: []
 })
 
 export const mutations = {
@@ -9,6 +12,21 @@ export const mutations = {
   },
   SET_PARSED_MT4_ORDERS (state, orders) {
     state.parsedMT4Orders = orders
+  },
+  ADD_TO_SELECTED_TICKETS (state, tickets) {
+    if (!Array.isArray(tickets)) {
+      tickets = [tickets]
+    }
+    state.selectedMT4Tickets = lodash.union(state.selectedMT4Tickets, tickets)
+  },
+  REMOVE_FROM_SELECTED_TICKETS (state, tickets) {
+    if (!Array.isArray(tickets)) {
+      tickets = [tickets]
+    }
+    state.selectedMT4Tickets = lodash.difference(state.selectedMT4Tickets, tickets)
+  },
+  SET_SELECTED_TICKETS (state, tickets) {
+    state.selectedMT4Tickets = tickets
   }
 }
 
@@ -25,7 +43,7 @@ export const actions = {
       return {
         ...o,
         time_open: new Date(o.time_open),
-        time_close: new Date(o.time_close),
+        time_close: o.time_close ? new Date(o.time_close) : o.time_close,
         item: o.item.toUpperCase()
       }
     })
@@ -33,6 +51,15 @@ export const actions = {
   },
   clearParsedMT4Orders ({ commit }) {
     commit('SET_PARSED_MT4_ORDERS', [])
+  },
+  addToSelectedTickets ({ commit }, tickets) {
+    commit('ADD_TO_SELECTED_TICKETS', tickets)
+  },
+  removeFromSelectedTickets ({ commit }, tickets) {
+    commit('REMOVE_FROM_SELECTED_TICKETS', tickets)
+  },
+  setSelectedTickets ({ commit }, tickets) {
+    commit('SET_SELECTED_TICKETS', tickets)
   }
 }
 
@@ -43,5 +70,14 @@ export const getters = {
   parsedMT4Orders: (state) => {
     console.log('Parsed orders getter...')
     return state.parsedMT4Orders
+  },
+  selectedTickets: (state) => {
+    return state.selectedMT4Tickets
+  },
+  selectedOrders: (state) => {
+    return lodash.filter(
+      state.parsedMT4Orders,
+      (order) => { return state.selectedMT4Tickets.includes(order.ticket) }
+    )
   }
 }

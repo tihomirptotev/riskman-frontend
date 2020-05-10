@@ -39,11 +39,14 @@
               </template>
 
               <v-list>
-                <v-list-item @click="clearOrders()">
-                  <v-list-item-title>Save selected records</v-list-item-title>
+                <v-list-item
+                  @click="saveSelectedOrders()"
+                  v-if="selectedOrders.length>0"
+                >
+                  <v-list-item-title>Save selected {{selectedOrders.length}} orders</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="clearOrders()">
-                  <v-list-item-title>Save all records</v-list-item-title>
+                  <v-list-item-title>Save all orders</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="clearOrders()">
                   <v-list-item-title>Clear all data</v-list-item-title>
@@ -74,15 +77,23 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters({ orders: 'journal/parsedMT4Orders' }),
+    ...mapGetters({
+      orders: 'journal/parsedMT4Orders',
+      selectedOrders: 'journal/selectedOrders'
+    }),
     hasOrders () {
       return this.orders.length > 0
     }
   },
   methods: {
-    ...mapActions({ showUploadForm: 'journal/setUploadMt4FormVisible', clearOrders: 'journal/clearParsedMT4Orders' })
+    ...mapActions({
+      showUploadForm: 'journal/setUploadMt4FormVisible',
+      clearOrders: 'journal/clearParsedMT4Orders'
+    }),
+    saveSelectedOrders () {
+      console.log('Selected orders:', this.selectedOrders)
+    }
   }
-
 }
 
 </script>
