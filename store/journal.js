@@ -1,4 +1,5 @@
 import * as lodash from 'lodash'
+import consola from 'consola'
 
 export const state = () => ({
   uploadMt4FormVisible: false,
@@ -68,7 +69,7 @@ export const getters = {
     return state.uploadMt4FormVisible
   },
   parsedMT4Orders: (state) => {
-    console.log('Parsed orders getter...')
+    consola.info('Parsed orders getter...')
     return state.parsedMT4Orders
   },
   selectedTickets: (state) => {

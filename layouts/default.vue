@@ -42,7 +42,7 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <span v-if="$auth.loggedIn">
-        Welcome, {{$auth.user.nickname}}
+        Welcome, {{ $auth.user.nickname }}
         <v-btn
           class="ma-2"
           icon

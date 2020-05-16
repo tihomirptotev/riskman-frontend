@@ -20,12 +20,12 @@
             :lazy-validation="lazy"
           >
             <v-file-input
+              v-model="uploadFile"
               show-size
               accept=".htm,.html"
               label="Report file input"
-              v-model="uploadFile"
               :rules="[rules.required]"
-            ></v-file-input>
+            />
             <v-btn
               :disabled="!valid"
               color="primary"

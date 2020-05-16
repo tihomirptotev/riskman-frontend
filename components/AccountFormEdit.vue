@@ -73,7 +73,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  props: { dialog: Boolean, acc: Object },
+  props: { dialog: Boolean, acc: { type: Object, default () { } } },
   data () {
     return {
       menu: false
@@ -94,7 +94,6 @@ export default {
         balance_start: parseFloat(this.acc.balance_start),
         balance_start_ts: new Date(this.acc.balance_start_ts).toISOString()
       }
-      console.log(this.accountEdited)
       this.$store.dispatch('accounts/updateAccount', accountEdited, { root: true })
       this.$store.commit('accounts/setShowEditForm', false, { root: true })
     }

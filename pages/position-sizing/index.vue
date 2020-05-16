@@ -48,8 +48,8 @@
                 </v-col>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="entryPrice"
+                    type="number"
                     label="Entry Price"
                     :rules="[rules.required,rules.positiveNumber]"
                   />
@@ -58,16 +58,16 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="balance"
+                    type="number"
                     label="Account Balance"
                     :rules="[rules.required,rules.positiveNumber]"
                   />
                 </v-col>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="riskPct"
+                    type="number"
                     label="Risk, %"
                     :rules="[rules.required,rules.positiveNumber]"
                   />
@@ -76,16 +76,16 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="slPrice"
+                    type="number"
                     label="Stop Loss, price"
                     :rules="[rules.required,rules.positiveNumber]"
                   />
                 </v-col>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="slPips"
+                    type="number"
                     label="Stop Loss, pips"
                     :rules="[rules.positiveNumber]"
                   />
@@ -94,16 +94,16 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="rrRatio"
+                    type="number"
                     label="Reward to Risk, ratio"
                     :rules="[rules.positiveNumber]"
                   />
                 </v-col>
                 <v-col>
                   <v-text-field
-                    type="number"
                     v-model="tpPrice"
+                    type="number"
                     label="Take Profit, price"
                     :rules="[rules.positiveNumber]"
                   />
@@ -127,8 +127,8 @@
         </v-card>
       </v-col>
       <v-col
-        cols="4"
         v-if="psResultsVisible"
+        cols="4"
       >
         <v-card
           raised
@@ -166,7 +166,7 @@
                     </tr>
                     <tr>
                       <td>Pip Value</td>
-                      <td class="text-right">{{ psResults.pip_value | floatFormat(4)}}</td>
+                      <td class="text-right">{{ psResults.pip_value | floatFormat(4) }}</td>
                     </tr>
                     <tr>
                       <td>Position Size</td>
@@ -178,15 +178,15 @@
                     </tr>
                     <tr>
                       <td>Stop Loss Pips</td>
-                      <td class="text-right">{{ psResults.sl_pips | floatFormat(0)}}</td>
+                      <td class="text-right">{{ psResults.sl_pips | floatFormat(0) }}</td>
                     </tr>
                     <tr>
                       <td>Stop Loss Price</td>
-                      <td class="text-right">{{ psResults.sl_price | floatFormat(4)}}</td>
+                      <td class="text-right">{{ psResults.sl_price | floatFormat(4) }}</td>
                     </tr>
                     <tr>
                       <td>Take Profit Price</td>
-                      <td class="text-right">{{ psResults.tp_price | floatFormat(4)}}</td>
+                      <td class="text-right">{{ psResults.tp_price | floatFormat(4) }}</td>
                     </tr>
                   </tbody>
                 </template>
@@ -204,7 +204,9 @@ import { mapGetters, mapActions } from 'vuex'
 import { filters } from '../../helpers/filters'
 export default {
   middleware: 'auth',
-
+  filters: {
+    ...filters
+  },
   async fetch ({ store, params }) {
     await store.dispatch('common/getCurrencies', { root: true })
     await store.dispatch('common/getFxSymbols', { root: true })
@@ -235,9 +237,6 @@ export default {
       valid: true,
       lazy: false
     }
-  },
-  filters: {
-    ...filters
   },
   computed: {
     ...mapGetters({

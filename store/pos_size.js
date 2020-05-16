@@ -18,7 +18,6 @@ export const actions = {
     const results = await this.$axios.$post('/pos-sizing', data)
     commit('setPsResults', results)
     commit('setPsResultsVisible', true)
-    console.log('Position sizing results fetched:', results)
   },
   showResultsReport ({ commit }, show) {
     commit('setPsResultsVisible', show)

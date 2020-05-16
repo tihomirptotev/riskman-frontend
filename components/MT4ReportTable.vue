@@ -1,22 +1,22 @@
 <template>
   <v-data-table
-    caption="Table caption"
     v-model="selected"
+    item-key="ticket"
+    show-select
+    caption="Table caption"
+    class="elevation-1"
     :headers="headers"
     :items="orders"
     :items-per-page="5"
     :single-select="false"
     @item-selected="onOrderSelected"
     @toggle-select-all="onAllOrdersSelected"
-    item-key="ticket"
-    show-select
-    class="elevation-1"
   >
     <template v-slot:item.time_open="{ item }">
       {{ item.time_open.toLocaleString() }}
     </template>
     <template v-slot:item.time_close="{ item }">
-      {{item.time_close ? item.time_close.toLocaleString() : item.time_close}}
+      {{ item.time_close ? item.time_close.toLocaleString() : item.time_close }}
     </template>
   </v-data-table>
 </template>
@@ -24,6 +24,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import * as lodash from 'lodash'
+import consola from 'consola'
 export default {
   data () {
     return {
@@ -139,7 +140,7 @@ export default {
       } else {
         this.removeFromSelectedTickets(row.item.ticket)
       }
-      console.log('Order selected:', row.item.ticket, row.value)
+      consola.info('Order selected:', row.item.ticket, row.value)
     },
     onAllOrdersSelected (rows) {
       const selected = rows.value
@@ -149,7 +150,7 @@ export default {
       } else {
         this.removeFromSelectedTickets(tickets)
       }
-      console.log('All orders selected:', rows.items, rows.value)
+      consola.info('All orders selected:', rows.items, rows.value)
     }
   }
 }

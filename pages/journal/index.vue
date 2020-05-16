@@ -40,10 +40,10 @@
 
               <v-list>
                 <v-list-item
-                  @click="saveSelectedOrders()"
                   v-if="selectedOrders.length>0"
+                  @click="saveSelectedOrders()"
                 >
-                  <v-list-item-title>Save selected {{selectedOrders.length}} orders</v-list-item-title>
+                  <v-list-item-title>Save selected {{ selectedOrders.length }} orders</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="clearOrders()">
                   <v-list-item-title>Save all orders</v-list-item-title>
@@ -53,8 +53,8 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-            <upload-file-form></upload-file-form>
-            <m-t4-report-table v-if="hasOrders"></m-t4-report-table>
+            <upload-file-form />
+            <m-t4-report-table v-if="hasOrders" />
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import consola from 'consola'
 import { mapActions, mapGetters } from 'vuex'
 import UploadFileForm from '@/components/UploadFileForm.vue'
 import MT4ReportTable from '@/components/MT4ReportTable.vue'
@@ -91,7 +92,7 @@ export default {
       clearOrders: 'journal/clearParsedMT4Orders'
     }),
     saveSelectedOrders () {
-      console.log('Selected orders:', this.selectedOrders)
+      consola.info('Selected orders:', this.selectedOrders)
     }
   }
 }
