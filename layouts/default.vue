@@ -5,6 +5,8 @@
       :mini-variant="miniVariant"
       clipped
       app
+      dark
+      color="primary"
       fixed
       expand-on-hover
       permanent
@@ -15,13 +17,13 @@
           v-for="(item, i) in items"
           :key="i"
           :to="item.to"
-          color="primary"
+          color="white"
           router
           exac
           dense
         >
           <v-list-item-action>
-            <v-icon color="primary">{{ item.icon }}</v-icon>
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
@@ -29,13 +31,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      clipped-left
-      fixed
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar clipped-left fixed app color="primary" dark>
       <v-app-bar-nav-icon>
         <v-icon>mdi-finance</v-icon>
       </v-app-bar-nav-icon>
@@ -43,22 +39,12 @@
       <v-spacer />
       <span v-if="$auth.loggedIn">
         Welcome, {{ $auth.user.nickname }}
-        <v-btn
-          class="ma-2"
-          icon
-          @click="onLogOut"
-        >
+        <v-btn class="ma-2" icon @click="onLogOut">
           <v-icon>mdi-logout-variant</v-icon>
         </v-btn>
       </span>
       <span v-else>
-        <v-btn
-          class="ma-2"
-          icon
-          @click="$auth.loginWith('auth0')"
-        >
-          Log In
-        </v-btn>
+        <v-btn class="ma-2" icon @click="$auth.loginWith('auth0')">Log In</v-btn>
       </span>
     </v-app-bar>
     <v-content>
@@ -66,10 +52,7 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-footer
-      :fixed="fixed"
-      app
-    >
+    <v-footer :fixed="fixed" app>
       <span>&copy; 2020</span>
     </v-footer>
   </v-app>
@@ -80,7 +63,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   // middleware: 'auth',
-  data () {
+  data() {
     return {
       fixed: false,
       items: [
@@ -132,7 +115,7 @@ export default {
   computed: mapGetters(['isAuthenticated']),
 
   methods: {
-    onLogOut () {
+    onLogOut() {
       this.$auth.logout()
       const domain = this.$store.state.auth0Domain
       const clientId = this.$store.state.auth0ClientId
